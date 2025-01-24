@@ -1,9 +1,11 @@
 import { View, Text, StyleSheet , Image,  TouchableOpacity} from 'react-native'
 import React from 'react'
 import Colors from '../../constant/Colors'
+import { useRouter } from 'expo-router'
 // import { Image } from 'react-native-web'
 
 export default function LoginScreen() {
+    const router = useRouter(); 
   return (
     <View>
       <View style={{
@@ -38,7 +40,7 @@ export default function LoginScreen() {
             textAlign:'center', 
             fontSize:16, 
             color:Colors.PRIMARY
-        }}>Continue </Text>
+        }}  onPress={()=> router.push('login/signin')}>Continue </Text>
       </TouchableOpacity>
       <Text 
         style={{color:'white' , marginTop:6}}
