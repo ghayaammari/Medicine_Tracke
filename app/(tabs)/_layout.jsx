@@ -11,7 +11,7 @@ export default function TabLayout() {
   useEffect(()=>{
     GetUserDetail();
   },[]) 
-  // use effect without params means when the page is rendred 
+  // use effect without params means when the page 
   const GetUserDetail = async ()=> {
     const userInfo = await getLocalStorage('userDetail');
     if(!userInfo){
