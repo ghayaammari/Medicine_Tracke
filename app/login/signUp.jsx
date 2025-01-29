@@ -25,7 +25,7 @@ export default function SignUp() {
             console.log(user)
             // onece the account successfully created we will be routed to the home screen called tabs 
             await updateProfile(user ,{displayName : userName} )
-            setLocalStorage('userDetail' , user )
+             await setLocalStorage('userDetail' , user )
             router.push('(tabs)')
             // ...
 

@@ -4,11 +4,24 @@ import { Tabs, useRouter } from 'expo-router'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../Configs/FireBaseConfig';
+import { getLocalStorage } from '../../Service/Storage';
 
 export default function TabLayout() {
   const router = useRouter()
-  const [authenticated , setAuthenticated ]= useState(null);
-// if user is logged in 
+  useEffect(()=>{
+    GetUserDetail();
+  },[]) 
+  // use effect without params means when the page is rendred 
+  const GetUserDetail = async ()=> {
+    const userInfo = await getLocalStorage('userDetail');
+    if(!userInfo){
+      router.replace('/login')
+    }
+  }
+
+  // if user is logged in 
+  /*
+    const [authenticated , setAuthenticated ]= useState(null);
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
@@ -30,7 +43,7 @@ export default function TabLayout() {
       router.push('/login')
     }
 
-  }, [authenticated])
+  }, [authenticated])*/
   return (
     <Tabs screenOptions={{
       headerShown:false

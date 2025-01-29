@@ -18,11 +18,11 @@ export default function SignIn() {
         }
         signInWithEmailAndPassword(auth, email, password)
 
-        .then((userCredential) => {
+        .then(async (userCredential) => {
             // Signed in 
             const user = userCredential.user;
             console.log(user)
-            setLocalStorage('userDetail' , user );
+            await setLocalStorage('userDetail' , user );
             router.replace('(tabs)')
             // ...
         })
