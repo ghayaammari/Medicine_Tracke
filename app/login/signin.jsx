@@ -1,10 +1,41 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ToastAndroid } from 'react-native'
+import React, { useState } from 'react'
 import Colors from '../../constant/Colors'
 import { useRouter } from 'expo-router'
-
+import{auth } from './../../Configs/FireBaseConfig'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { setLocalStorage } from '../../Service/Storage'
 export default function SignIn() {
     const router = useRouter() 
+    const [email , setEmail] = useState()
+    const [password , setPassword] = useState()
+
+    const onSingInClick = () => {
+        if(!email || !password){
+            Alert.alert("please enter email and password ! ");
+            ToastAndroid.show("please enter email and password !" , ToastAndroid.BOTTOM);
+            return;
+        }
+        signInWithEmailAndPassword(auth, email, password)
+
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            console.log(user)
+            setLocalStorage('userDetail' , user );
+            router.replace('(tabs)')
+            // ...
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            if(errorCode=="auth/invalid-credential"){
+                Alert.alert("Invalid email or password !")
+                ToastAndroid.show("Invalid email or password !" , ToastAndroid.BOTTOM); 
+            }
+            console.log
+        });
+    }
   return (
     <View style={{
         padding:25
@@ -14,13 +45,13 @@ export default function SignIn() {
         <Text  style={styles.subText}>You've been missed!</Text>
         <View style={{marginTop:25}}>
             <Text>Email</Text>
-            <TextInput style={styles.textInput} placeholder='Email'/>
+            <TextInput onChangeText={(value)=> setEmail(value)} style={styles.textInput} placeholder='Email'/>
         </View>
         <View style={{marginTop:25}}>
             <Text>Password</Text>
-            <TextInput style={styles.textInput} placeholder='Password' secureTextEntry={true}/>
+            <TextInput onChangeText={(value)=> setPassword(value)} style={styles.textInput} placeholder='Password' secureTextEntry={true}/>
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={onSingInClick} style={styles.button}>
             <Text style={{
                 fontSize:17, 
                 color:'white', 
